@@ -35,9 +35,9 @@ class ViewController: UIViewController {
         scroll.delegate = self
         scroll.bounces = false
         
-        for index in 0...30 {
+        for index in 0...1100 {
             if index % 2 == 1 {
-                let buttonR1 = UIButton(frame: CGRect(x: CGFloat(index) * scroll.contentSize.width / 10, y: 50, width: view.bounds.width / 3, height: view.bounds.width / 3))
+                let buttonR1 = UIButton(frame: CGRect(x: CGFloat(index) * scroll.contentSize.width / 10, y: 50, width: scroll.contentSize.width / 10, height: scroll.contentSize.width / 10))
                 
                 buttonR1.layer.cornerRadius = buttonR1.bounds.width / 2
 //                buttonR1.setTitle(buttonsR1Titles[0], for: .normal)
@@ -53,7 +53,7 @@ class ViewController: UIViewController {
                 
                 addTargetToButton()
                 
-                let buttonR3 = UIButton(frame: CGRect(x: CGFloat(index) * scroll.contentSize.width / 10, y: view.bounds.height / 3 * 2 + 50, width: view.bounds.width / 3, height: view.bounds.width / 3))
+                let buttonR3 = UIButton(frame: CGRect(x: CGFloat(index) * scroll.contentSize.width / 10, y: view.bounds.height / 3 * 2 + 50, width: scroll.contentSize.width / 10, height: scroll.contentSize.width / 10))
                 
                 buttonR3.layer.cornerRadius = buttonR3.bounds.width / 2
 //                buttonR3.setTitle(buttonsR3Titles[0], for: .normal)
@@ -67,7 +67,7 @@ class ViewController: UIViewController {
                 scroll.addSubview(buttonR3)
             }
             else {
-                let buttonR2 = UIButton(frame: CGRect(x: CGFloat(index) * scroll.contentSize.width / 10, y: view.bounds.height / 3 + 50, width: view.bounds.width / 3, height: view.bounds.width / 3))
+                let buttonR2 = UIButton(frame: CGRect(x: CGFloat(index) * scroll.contentSize.width / 10, y: view.bounds.height / 3 + 50, width: scroll.contentSize.width / 10, height: scroll.contentSize.width / 10))
                 
                 buttonR2.layer.cornerRadius = buttonR2.bounds.width / 2
 //                buttonR2.setTitle(buttonsR2Titles[0], for: .normal)
@@ -174,9 +174,13 @@ extension ViewController: UIScrollViewDelegate {
         let rows = 3
         let maxOffset = CGFloat(buttons.count * maxRadius / rows) - view.bounds.width
         
+        if maxOffset > scroll.contentSize.width {
+            scroll.contentSize = CGSize(width: maxOffset, height: view.bounds.height - 100)
+        }
+        
         var offset = scrollView.contentOffset.x
         
-        offset = offset > maxOffset ? maxOffset : offset
+//        offset = offset > maxOffset ? maxOffset : offset
         
         scrollView.contentOffset = CGPoint(x: offset, y: scrollView.contentOffset.y)
         
