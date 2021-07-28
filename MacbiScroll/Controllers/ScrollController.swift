@@ -8,15 +8,10 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ScrollController: UIViewController {
     
     //MARK: Properties
-    
-//    var buttonsR1Titles = ["topic 1", "topic 2", "topic 3"]
-//    var buttonsR2Titles = ["topic 4", "topic 5", "topic 6", "topic 7"]
-//    var buttonsR3Titles = ["topic 8", "topic 9", "topic 10"]
     var buttons: [UIButton] = []
-    
     var scroll = UIScrollView(frame: .zero)
     var lastOffset: CGFloat = 0
     
@@ -27,6 +22,46 @@ class ViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
+        setScrollView()
+        addScrollViewButtons()
+        
+    }
+    
+    func addScrollViewButtons() {
+        for index in 0...1100  {
+            if index % 2 == 1 {
+                let buttonR1 = UIButton(frame: CGRect(x: CGFloat(index) * scroll.contentSize.width / 10, y: 50, width: scroll.contentSize.width / 10, height: scroll.contentSize.width / 10))
+                
+                setButton(button: buttonR1)
+                
+                let buttonR3 = UIButton(frame: CGRect(x: CGFloat(index) * scroll.contentSize.width / 10, y: view.bounds.height / 3 * 2 + 50, width: scroll.contentSize.width / 10, height: scroll.contentSize.width / 10))
+                
+                setButton(button: buttonR3)
+                
+            }
+            else {
+                let buttonR2 = UIButton(frame: CGRect(x: CGFloat(index) * scroll.contentSize.width / 10, y: view.bounds.height / 3 + 50, width: scroll.contentSize.width / 10, height: scroll.contentSize.width / 10))
+                
+                setButton(button: buttonR2)
+            }
+        }
+    }
+    
+    func setButton(button: UIButton) {
+        button.layer.cornerRadius = button.bounds.width / 2
+
+        title = "topic\(Int.random(in: 1...100))"
+        button.setTitle(title, for: .normal)
+        
+        button.backgroundColor = buttonFormat(sender: button).isGreen ? .green : .blue
+        
+        buttons.append(button)
+        scroll.addSubview(button)
+
+        addTargetToButton()
+    }
+    
+    func setScrollView() {
         scroll = UIScrollView(frame: view.bounds)
         scroll.backgroundColor = .black
         scroll.contentSize = CGSize(width: view.bounds.width * 2, height: view.bounds.height - 100)
@@ -34,57 +69,6 @@ class ViewController: UIViewController {
         view.addSubview(scroll)
         scroll.delegate = self
         scroll.bounces = false
-        
-        for index in 0...1100 {
-            if index % 2 == 1 {
-                let buttonR1 = UIButton(frame: CGRect(x: CGFloat(index) * scroll.contentSize.width / 10, y: 50, width: scroll.contentSize.width / 10, height: scroll.contentSize.width / 10))
-                
-                buttonR1.layer.cornerRadius = buttonR1.bounds.width / 2
-//                buttonR1.setTitle(buttonsR1Titles[0], for: .normal)
-                var title = "topic\(Int.random(in: 1...100))"
-                buttonR1.setTitle(title, for: .normal)
-                
-                buttonR1.backgroundColor = buttonFormat(sender: buttonR1).isGreen ? .green : .blue
-                
-//                buttonsR1Titles.remove(at: 0)
-                
-                buttons.append(buttonR1)
-                scroll.addSubview(buttonR1)
-                
-                addTargetToButton()
-                
-                let buttonR3 = UIButton(frame: CGRect(x: CGFloat(index) * scroll.contentSize.width / 10, y: view.bounds.height / 3 * 2 + 50, width: scroll.contentSize.width / 10, height: scroll.contentSize.width / 10))
-                
-                buttonR3.layer.cornerRadius = buttonR3.bounds.width / 2
-//                buttonR3.setTitle(buttonsR3Titles[0], for: .normal)
-                title = "topic\(Int.random(in: 1...100))"
-                buttonR3.setTitle(title, for: .normal)
-                
-                buttonR3.backgroundColor = buttonFormat(sender: buttonR3).isGreen ? .green : .blue
-//                buttonsR3Titles.remove(at: 0)
-                
-                buttons.append(buttonR3)
-                scroll.addSubview(buttonR3)
-            }
-            else {
-                let buttonR2 = UIButton(frame: CGRect(x: CGFloat(index) * scroll.contentSize.width / 10, y: view.bounds.height / 3 + 50, width: scroll.contentSize.width / 10, height: scroll.contentSize.width / 10))
-                
-                buttonR2.layer.cornerRadius = buttonR2.bounds.width / 2
-//                buttonR2.setTitle(buttonsR2Titles[0], for: .normal)
-                let title = "topic\(Int.random(in: 1...999))"
-                buttonR2.setTitle(title, for: .normal)
-                
-                buttonR2.backgroundColor = buttonFormat(sender: buttonR2).isGreen ? .green : .blue
-                
-//                buttonsR2Titles.remove(at: 0)
-                
-                buttons.append(buttonR2)
-                scroll.addSubview(buttonR2)
-            }
-            
-            addTargetToButton()
-        }
-        
     }
     
     func addTargetToButton() {
@@ -168,7 +152,7 @@ class ViewController: UIViewController {
     }
 }
 
-extension ViewController: UIScrollViewDelegate {
+extension ScrollController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let maxRadius = 120
         let rows = 3
